@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Men's Jeans - DESIGNER</title>
+
+    <link rel="stylesheet"
+          href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- ========================= -->
+<!-- HEADER -->
+<!-- ========================= -->
+
+<header>
+
+    <div class="logo">
+        DESIGNER
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="index.html#products">
+            Shirts
+        </a>
+
+        <a href="jeans.html">
+            Jeans
+        </a>
+
+        <a href="shoes.html">
+            Shoes
+        </a>
+
+        <a href="cart.html">
+            🛒 Cart
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ========================= -->
+<!-- JEANS PRODUCTS -->
+<!-- ========================= -->
+
+<section id="products">
+
+    <h2>Men's Jeans</h2>
+
+    <!--
+        PRODUCTS WILL BE CREATED
+        AUTOMATICALLY BY JAVASCRIPT
+    -->
+
+    <div
+        id="jeansProductGrid"
+        class="products">
+    </div>
+
+</section>
+
+
+
+<!-- ========================= -->
+<!-- PRODUCT DETAIL POPUP -->
+<!-- ========================= -->
+
+<div id="productModal"
+     class="modal">
+
+
+    <div class="modal-box">
+
+
+        <!-- CLOSE BUTTON -->
+
+        <button
+            class="close"
+            onclick="closeProduct()">
+
+            ×
+
+        </button>
+
+
+
+        <div class="detail-grid">
+
+
+            <!-- ========================= -->
+            <!-- PRODUCT IMAGES -->
+            <!-- ========================= -->
+
+            <div>
+
+
+                <div class="main-photo-wrap">
+
+
+                    <!-- PREVIOUS -->
+
+                    <button
+                        class="slide prev"
+                        onclick="changeImage(-1)">
+
+                        ❮
+
+                    </button>
+
+
+
+                    <!-- MAIN IMAGE -->
+
+                    <img
+                        id="detailImage"
+                        class="detail-image"
+                        src=""
+                        alt="Product"
+                    >
+
+
+
+                    <!-- NEXT -->
+
+                    <button
+                        class="slide next"
+                        onclick="changeImage(1)">
+
+                        ❯
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- THUMBNAILS -->
+
+                <div
+                    id="thumbnails"
+                    class="thumbs">
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- PRODUCT DETAILS -->
+            <!-- ========================= -->
+
+            <div class="details">
+
+
+                <h2 id="detailName">
+                </h2>
+
+
+
+                <p>
+
+                    <del id="detailOldPrice">
+                    </del>
+
+                    <strong id="detailPrice">
+                    </strong>
+
+                </p>
+
+
+
+                <p
+                    class="discount"
+                    id="detailDiscount">
+                </p>
+
+
+
+                <!-- ========================= -->
+                <!-- SIZE -->
+                <!-- ========================= -->
+
+                <h3>
+                    Select Waist Size
+                </h3>
+
+
+                <div
+                    id="sizeButtons"
+                    class="sizes">
+                </div>
+
+
+
+                <!-- ========================= -->
+                <!-- SIZE CHART -->
+                <!-- ========================= -->
+
+                <h3>
+                    Size & Measurements
+                </h3>
+
+
+                <div id="sizeChart">
+                </div>
+
+
+
+                <!-- ========================= -->
+                <!-- DESCRIPTION -->
+                <!-- ========================= -->
+
+                <p>
+
+                    Premium quality denim.
+                    Comfortable fit.
+                    Stylish design for everyday wear.
+
+                </p>
+
+
+
+                <!-- ========================= -->
+                <!-- ADD TO CART -->
+                <!-- ========================= -->
+
+                <button
+                    class="cart-btn"
+                    onclick="addCurrentProductToCart()">
+
+                    Add to Cart
+
+                </button>
+
+
+
+                <a
+                    class="cart-link-button"
+                    href="cart.html">
+
+                    Go to Cart
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ========================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================= -->
+
+<script>
+
+
+/* =================================
+   JEANS PRODUCT DATA
+   ================================= */
+
+
+const jeansProducts = [
+
+    {
+
+        id: 1,
+
+        name:
+            "Men's Slim Fit Blue Jeans",
+
+        price:
+            1199,
+
+        oldPrice:
+            1799,
+
+
+        /*
+            ONLY PLACE WHERE
+            PRODUCT IMAGES ARE STORED
+        */
+
+        images: [
+
+            "https://wrogn.com/cdn/shop/files/1_5eb7a55f-eb76-4545-980f-560638f97513.webp?v=1769021505",
+
+            "https://wrogn.com/cdn/shop/files/2_1d037ff4-90a3-47c2-b1f6-c8ee92d5e44d.webp?v=1769021505",
+
+            "https://wrogn.com/cdn/shop/files/3_a3c67dfb-6f2f-4a22-9c1d-3dc61b932c41.webp?v=1769021505",
+
+            "https://wrogn.com/cdn/shop/files/4_55f72e15-e849-4c91-bf99-fc3a9f4f6540.webp?v=1769021505",
+
+            "https://wrogn.com/cdn/shop/files/6_d47a249d-de7a-4b7e-b7d1-e8a74b3778e5.webp?v=1769021506"
+
+        ]
+
+    },
+
+
+    {
+
+        id: 2,
+
+        name:
+            "Men's Regular Fit Jeans",
+
+        price:
+            999,
+
+        oldPrice:
+            1599,
+
+
+        /*
+            ONLY PLACE WHERE
+            PRODUCT IMAGES ARE STORED
+        */
+
+        images: [
+
+            "https://wrogn.com/cdn/shop/files/1_362ac6e5-e535-40c8-8143-18234fe6347f.jpg?v=1749124842",
+
+            "https://wrogn.com/cdn/shop/files/2_c459dbf2-fb8f-4e86-9c03-6fd830646fcd.jpg?v=1749124858",
+
+            "https://wrogn.com/cdn/shop/files/3_31e93bb8-fad0-4350-bf74-5dc9a3294678.jpg?v=1749124842",
+
+            "https://wrogn.com/cdn/shop/files/5_0bf94d54-d4ab-43eb-bb83-ecf8cbe0b534.jpg?v=1749124842"
+
+        ]
+
+    }
+
+];
+
+
+
+/* =================================
+   CURRENT PRODUCT
+   ================================= */
+
+
+let currentProduct = null;
+
+let currentImageIndex = 0;
+
+let selectedSize = "";
+
+
+
+/* =================================
+   RENDER PRODUCTS
+   ================================= */
+
+
+function renderJeansProducts() {
+
+
+    const grid =
+        document.getElementById(
+            "jeansProductGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    jeansProducts.forEach(
+        function(product) {
+
+
+            const discount =
+                Math.round(
+
+                    (
+                        (
+                            product.oldPrice -
+                            product.price
+                        )
+                        /
+                        product.oldPrice
+                    )
+                    *
+                    100
+
+                );
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "product";
+
+
+            card.innerHTML = `
+
+
+                <!-- PRODUCT IMAGE -->
+
+                <div
+                    class="card-image"
+                    onclick="openProduct(${product.id})"
+                >
+
+                    <img
+                        src="${product.images[0]}"
+                        alt="${product.name}"
+                    >
+
+                    <span class="view">
+                        View Details
+                    </span>
+
+                </div>
+
+
+
+                <!-- PRODUCT NAME -->
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+
+
+                <!-- PRICE -->
+
+                <p class="price">
+
+                    <del>
+                        ₹${product.oldPrice}
+                    </del>
+
+                    <strong>
+                        ₹${product.price}
+                    </strong>
+
+                </p>
+
+
+
+                <!-- DISCOUNT -->
+
+                <p class="discount">
+
+                    ${discount}% OFF
+
+                </p>
+
+
+
+                <!-- VIEW PRODUCT -->
+
+                <button
+                    onclick="openProduct(${product.id})">
+
+                    View Product
+
+                </button>
+
+
+            `;
+
+
+            grid.appendChild(card);
+
+
+        }
+    );
+
+}
+
+
+
+/* =================================
+   OPEN PRODUCT
+   ================================= */
+
+
+function openProduct(id) {
+
+
+    currentProduct =
+        jeansProducts.find(
+            function(product) {
+
+                return product.id === id;
+
+            }
+        );
+
+
+    if (!currentProduct) {
+
+        return;
+
+    }
+
+
+    currentImageIndex = 0;
+
+    selectedSize = "";
+
+
+
+    /* PRODUCT NAME */
+
+    document.getElementById(
+        "detailName"
+    ).innerText =
+        currentProduct.name;
+
+
+
+    /* OLD PRICE */
+
+    document.getElementById(
+        "detailOldPrice"
+    ).innerText =
+        "₹" +
+        currentProduct.oldPrice;
+
+
+
+    /* CURRENT PRICE */
+
+    document.getElementById(
+        "detailPrice"
+    ).innerText =
+        "₹" +
+        currentProduct.price;
+
+
+
+    /* DISCOUNT */
+
+    const discount =
+        Math.round(
+
+            (
+                (
+                    currentProduct.oldPrice -
+                    currentProduct.price
+                )
+                /
+                currentProduct.oldPrice
+            )
+            *
+            100
+
+        );
+
+
+    document.getElementById(
+        "detailDiscount"
+    ).innerText =
+        discount +
+        "% OFF";
+
+
+
+    /* MAIN IMAGE */
+
+    document.getElementById(
+        "detailImage"
+    ).src =
+        currentProduct.images[0];
+
+
+
+    /* =================================
+       CREATE THUMBNAILS AUTOMATICALLY
+       ================================= */
+
+
+    const thumbnails =
+        document.getElementById(
+            "thumbnails"
+        );
+
+
+    thumbnails.innerHTML = "";
+
+
+    currentProduct.images.forEach(
+        function(image, index) {
+
+
+            const img =
+                document.createElement(
+                    "img"
+                );
+
+
+            img.src =
+                image;
+
+
+            img.alt =
+                "Product Image " +
+                (index + 1);
+
+
+            img.onclick =
+                function() {
+
+                    setImage(index);
+
+                };
+
+
+            thumbnails.appendChild(
+                img
+            );
+
+
+        }
+    );
+
+
+
+    /* CREATE SIZE BUTTONS */
+
+    createSizeButtons();
+
+
+
+    /* CREATE SIZE CHART */
+
+    createSizeChart();
+
+
+
+    /* OPEN POPUP */
+
+    document.getElementById(
+        "productModal"
+    ).style.display =
+        "flex";
+
+
+}
+
+
+
+/* =================================
+   CLOSE PRODUCT
+   ================================= */
+
+
+function closeProduct() {
+
+
+    document.getElementById(
+        "productModal"
+    ).style.display =
+        "none";
+
+}
+
+
+
+/* =================================
+   NEXT / PREVIOUS IMAGE
+   ================================= */
+
+
+function changeImage(direction) {
+
+
+    currentImageIndex +=
+        direction;
+
+
+    if (
+        currentImageIndex >=
+        currentProduct.images.length
+    ) {
+
+        currentImageIndex = 0;
+
+    }
+
+
+    if (
+        currentImageIndex < 0
+    ) {
+
+        currentImageIndex =
+            currentProduct.images.length - 1;
+
+    }
+
+
+    setImage(
+        currentImageIndex
+    );
+
+}
+
+
+
+/* =================================
+   SET IMAGE
+   ================================= */
+
+
+function setImage(index) {
+
+
+    currentImageIndex =
+        index;
+
+
+    document.getElementById(
+        "detailImage"
+    ).src =
+        currentProduct.images[index];
+
+}
+
+
+
+/* =================================
+   CREATE JEANS SIZES
+   ================================= */
+
+
+function createSizeButtons() {
+
+
+    const sizes = [
+
+        "28",
+        "30",
+        "32",
+        "34",
+        "36",
+        "38"
+
+    ];
+
+
+    const box =
+        document.getElementById(
+            "sizeButtons"
+        );
+
+
+    box.innerHTML = "";
+
+
+    sizes.forEach(
+        function(size) {
+
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.innerText =
+                size;
+
+
+            button.onclick =
+                function() {
+
+                    selectSize(
+                        button
+                    );
+
+                };
+
+
+            box.appendChild(
+                button
+            );
+
+
+        }
+    );
+
+}
+
+
+
+/* =================================
+   SELECT SIZE
+   ================================= */
+
+
+function selectSize(button) {
+
+
+    document
+        .querySelectorAll(
+            "#sizeButtons button"
+        )
+        .forEach(
+            function(btn) {
+
+                btn.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    selectedSize =
+        button.innerText;
+
+}
+
+
+
+/* =================================
+   SIZE CHART
+   ================================= */
+
+
+function createSizeChart() {
+
+
+    document.getElementById(
+        "sizeChart"
+    ).innerHTML = `
+
+        <table>
+
+            <tr>
+
+                <th>
+                    Size
+                </th>
+
+                <th>
+                    Waist
+                </th>
+
+                <th>
+                    Length
+                </th>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    28
+                </td>
+
+                <td>
+                    28"
+                </td>
+
+                <td>
+                    40"
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    30
+                </td>
+
+                <td>
+                    30"
+                </td>
+
+                <td>
+                    40"
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    32
+                </td>
+
+                <td>
+                    32"
+                </td>
+
+                <td>
+                    41"
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    34
+                </td>
+
+                <td>
+                    34"
+                </td>
+
+                <td>
+                    41"
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    36
+                </td>
+
+                <td>
+                    36"
+                </td>
+
+                <td>
+                    42"
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    38
+                </td>
+
+                <td>
+                    38"
+                </td>
+
+                <td>
+                    42"
+                </td>
+
+            </tr>
+
+        </table>
+
+    `;
+
+}
+
+
+
+/* =================================
+   ADD TO CART
+   ================================= */
+
+
+function addCurrentProductToCart() {
+
+
+    if (!selectedSize) {
+
+
+        alert(
+            "Please select a jeans size."
+        );
+
+
+        return;
+
+    }
+
+
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(
+                "cart"
+            )
+        ) || [];
+
+
+
+    const existing =
+        cart.find(
+            function(product) {
+
+
+                return (
+
+                    product.name ===
+                    currentProduct.name
+
+                    &&
+
+                    product.size ===
+                    selectedSize
+
+                );
+
+            }
+        );
+
+
+
+    if (existing) {
+
+
+        existing.quantity++;
+
+    }
+
+
+    else {
+
+
+        cart.push({
+
+            name:
+                currentProduct.name,
+
+            price:
+                currentProduct.price,
+
+            image:
+                currentProduct.images[0],
+
+            size:
+                selectedSize,
+
+            quantity:
+                1
+
+        });
+
+    }
+
+
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    alert(
+        "Product added to cart!"
+    );
+
+}
+
+
+
+/* =================================
+   CLOSE WHEN CLICKING OUTSIDE
+   ================================= */
+
+
+window.onclick =
+    function(event) {
+
+
+        const modal =
+            document.getElementById(
+                "productModal"
+            );
+
+
+        if (
+            event.target === modal
+        ) {
+
+
+            closeProduct();
+
+
+        }
+
+
+    };
+
+
+
+/* =================================
+   START
+   ================================= */
+
+
+renderJeansProducts();
+
+
+</script>
+
+
+</body>
+
+</html>

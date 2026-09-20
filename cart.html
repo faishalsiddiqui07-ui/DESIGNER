@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Your Cart - DESIGNER</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">DESIGNER</div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">🛒 Cart</a>
+    </nav>
+</header>
+
+
+<section class="cart-page">
+
+    <h1>Your Shopping Cart</h1>
+
+    <!-- Cart Products -->
+    <div id="cartItems"></div>
+
+
+    <!-- Total -->
+    <div class="total-box">
+        <h2>
+            Total: ₹<span id="total">0</span>
+        </h2>
+    </div>
+
+
+    <!-- Delivery Details -->
+    <div class="customer-form">
+
+        <h2>Delivery Details</h2>
+
+        <input
+            type="text"
+            id="customerName"
+            placeholder="Full Name"
+        >
+
+        <input
+            type="tel"
+            id="customerPhone"
+            placeholder="Mobile Number"
+        >
+
+        <textarea
+            id="customerAddress"
+            placeholder="Complete Delivery Address"
+        ></textarea>
+
+        <input
+            type="text"
+            id="customerCity"
+            placeholder="City"
+        >
+
+        <input
+            type="text"
+            id="customerPincode"
+            placeholder="PIN Code"
+        >
+
+
+        <!-- Payment Button -->
+        <button
+            class="order-btn"
+            onclick="goToPayment()"
+        >
+            Continue to Payment
+        </button>
+
+        <p class="note">
+            Pay the advance delivery charge to confirm your COD order.
+        </p>
+
+    </div>
+
+</section>
+
+
+<footer>
+    © 2026 DESIGNER Men's Fashion Store
+</footer>
+
+
+
+<script>
+
+/* =========================
+   DISPLAY CART
+========================= */
+
+function displayCart() {
+
+    const cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
+
+    const box =
+        document.getElementById("cartItems");
+
+    let total = 0;
+
+
+    /* Empty Cart */
+
+    if (!cart.length) {
+
+        box.innerHTML =
+            "<h3>Your cart is empty.</h3>";
+
+        document.getElementById("total").innerText = "0";
+
+        return;
+    }
+
+
+    /* Display Products */
+
+    box.innerHTML = cart.map((p, i) => {
+
+        const itemTotal =
+            p.price * p.quantity;
+
+        total += itemTotal;
+
+
+        return `
+        <div class="cart-item">
+
+            <img
+                src="${p.image}"
+                alt="${p.name}"
+            >
+
+            <div class="cart-info">
+
+                <h3>${p.name}</h3>
+
+                <p>
+                    Price: ₹${p.price}
+                </p>
+
+                <p>
+                    Size: ${p.size || "Not selected"}
+                </p>
+
+
+                <div class="quantity">
+
+                    <button
+                        onclick="changeQty(${i}, -1)"
+                    >
+                        −
+                    </button>
+
+                    <span>
+                        ${p.quantity}
+                    </span>
+
+                    <button
+                        onclick="changeQty(${i}, 1)"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <p>
+                    Item Total: ₹${itemTotal}
+                </p>
+
+
+                <button
+                    class="remove"
+                    onclick="removeProduct(${i})"
+                >
+                    Remove
+                </button>
+
+            </div>
+
+        </div>
+        `;
+
+    }).join("");
+
+
+    /* Show Total */
+
+    document.getElementById("total").innerText = total;
+
+}
+
+
+
+/* =========================
+   CHANGE QUANTITY
+========================= */
+
+function changeQty(index, delta) {
+
+    let cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
+
+
+    cart[index].quantity += delta;
+
+
+    if (cart[index].quantity <= 0) {
+
+        cart.splice(index, 1);
+
+    }
+
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    displayCart();
+
+}
+
+
+
+/* =========================
+   REMOVE PRODUCT
+========================= */
+
+function removeProduct(index) {
+
+    let cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
+
+
+    cart.splice(index, 1);
+
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    displayCart();
+
+}
+
+
+
+/* =========================
+   CONTINUE TO PAYMENT
+========================= */
+
+function goToPayment() {
+
+    const cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
+
+
+    /* Check Cart */
+
+    if (!cart.length) {
+
+        alert("Your cart is empty!");
+
+        return;
+    }
+
+
+    /* Get Customer Details */
+
+    const name =
+        document
+        .getElementById("customerName")
+        .value
+        .trim();
+
+
+    const phone =
+        document
+        .getElementById("customerPhone")
+        .value
+        .trim();
+
+
+    const address =
+        document
+        .getElementById("customerAddress")
+        .value
+        .trim();
+
+
+    const city =
+        document
+        .getElementById("customerCity")
+        .value
+        .trim();
+
+
+    const pincode =
+        document
+        .getElementById("customerPincode")
+        .value
+        .trim();
+
+
+
+    /* Check Details */
+
+    if (
+        !name ||
+        !phone ||
+        !address ||
+        !city ||
+        !pincode
+    ) {
+
+        alert(
+            "Please fill all delivery details."
+        );
+
+        return;
+    }
+
+
+
+    /* Calculate Total */
+
+    let total = 0;
+
+
+    cart.forEach(product => {
+
+        total +=
+            product.price *
+            product.quantity;
+
+    });
+
+
+
+    /* Save Customer Details */
+
+    const customerDetails = {
+
+        name: name,
+
+        phone: phone,
+
+        address: address,
+
+        city: city,
+
+        pincode: pincode
+
+    };
+
+
+    localStorage.setItem(
+        "customerDetails",
+        JSON.stringify(customerDetails)
+    );
+
+
+
+    /* Save Order Total */
+
+    localStorage.setItem(
+        "orderTotal",
+        total
+    );
+
+
+
+    /* Go To Payment Page */
+
+    window.location.href =
+        "payment.html";
+
+}
+
+
+
+/* =========================
+   LOAD CART
+========================= */
+
+displayCart();
+
+</script>
+
+</body>
+</html>

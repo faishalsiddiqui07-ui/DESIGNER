@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Men's Shoes - DESIGNER</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        DESIGNER
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="index.html#products">
+            Shirts
+        </a>
+
+        <a href="jeans.html">
+            Jeans
+        </a>
+
+        <a href="shoes.html">
+            Shoes
+        </a>
+
+        <a href="cart.html">
+            🛒 Cart
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ========================= -->
+<!-- SHOES PRODUCTS -->
+<!-- ========================= -->
+
+<section id="products">
+
+    <h2>Men's Shoes</h2>
+
+    <div
+        class="products"
+        id="shoeProductsContainer">
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PRODUCT DETAIL POPUP -->
+<!-- ========================= -->
+
+<div id="productModal"
+     class="modal">
+
+    <div class="modal-box">
+
+        <button
+            class="close"
+            onclick="closeProduct()">
+            ×
+        </button>
+
+
+        <div class="detail-grid">
+
+
+            <!-- ========================= -->
+            <!-- PRODUCT IMAGES -->
+            <!-- ========================= -->
+
+            <div>
+
+                <div class="main-photo-wrap">
+
+                    <button
+                        class="slide prev"
+                        onclick="changeImage(-1)">
+                        ❮
+                    </button>
+
+                    <img
+                        id="detailImage"
+                        class="detail-image"
+                        src=""
+                        alt="Shoe">
+
+                    <button
+                        class="slide next"
+                        onclick="changeImage(1)">
+                        ❯
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="thumbnails"
+                    class="thumbs">
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- PRODUCT DETAILS -->
+            <!-- ========================= -->
+
+            <div class="details">
+
+                <h2 id="detailName"></h2>
+
+                <p>
+
+                    <del id="detailOldPrice"></del>
+
+                    <strong id="detailPrice"></strong>
+
+                </p>
+
+                <p
+                    class="discount"
+                    id="detailDiscount">
+                </p>
+
+
+                <h3>
+                    Select Shoe Size
+                </h3>
+
+                <div
+                    id="sizeButtons"
+                    class="sizes">
+                </div>
+
+
+                <h3>
+                    Size & Measurements
+                </h3>
+
+                <div id="sizeChart">
+                </div>
+
+
+                <p>
+                    Comfortable and stylish footwear
+                    designed for everyday use.
+                </p>
+
+
+                <button
+                    class="cart-btn"
+                    onclick="addCurrentProductToCart()">
+                    Add to Cart
+                </button>
+
+                <a
+                    class="cart-link-button"
+                    href="cart.html">
+                    Go to Cart
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================================= */
+/* SHOE PRODUCT DATA */
+/* ================================= */
+
+/*
+   IMAGE YAHAN SIRF EK JAGAH ADD KARNI HAI.
+
+   images[0] = main/card image
+   images[1-4] = popup gallery images
+*/
+
+const shoeProducts = [
+
+    {
+        id: 1,
+
+        name: "Sneakers | Bramble Stone",
+
+        price: 1599,
+
+        oldPrice: 2499,
+
+        images: [
+
+            "https://wrogn.com/cdn/shop/files/1_2b11cdd1-d66f-46a4-8a6c-da57692ae58d.webp?v=1774552983",
+
+            "https://wrogn.com/cdn/shop/files/wvcs120.jpg?v=1774552983",
+
+            "https://wrogn.com/cdn/shop/files/2_042997dd-a222-4b86-8c66-f1a1580e79df.webp?v=1764773388",
+
+            "https://wrogn.com/cdn/shop/files/3_e2be0630-a1ef-4252-b02c-28f7e9fbe43d.webp?v=1764773388",
+
+            "https://wrogn.com/cdn/shop/files/5_80a56508-9c0d-41f5-9145-292ecaecb259.webp?v=1764773388"
+
+        ]
+    },
+
+
+    {
+        id: 2,
+
+        name: "Men's Running Shoes",
+
+        price: 1999,
+
+        oldPrice: 2999,
+
+        images: [
+
+            "https://wrogn.com/cdn/shop/files/wvcs007.jpg?v=1775032316",
+
+            "https://wrogn.com/cdn/shop/files/1_a03b596a-e76c-44df-9b36-b3c095b4d198.jpg?v=1775032316",
+
+            "https://wrogn.com/cdn/shop/files/2_9b039013-7264-4e82-9856-c985ff63f46b.jpg?v=1775032323",
+
+            "https://wrogn.com/cdn/shop/files/4_d7924d75-f4b5-41a6-b924-8901e7f6598d.jpg?v=1775032323",
+
+            "https://wrogn.com/cdn/shop/files/wvcs007_1.webp?v=1775032323"
+
+        ]
+    }
+
+];
+
+
+/* ================================= */
+/* CURRENT PRODUCT */
+/* ================================= */
+
+let currentProduct = null;
+
+let currentImageIndex = 0;
+
+let selectedSize = "";
+
+
+/* ================================= */
+/* RENDER SHOES */
+/* ================================= */
+
+function renderShoes() {
+
+    const container =
+        document.getElementById(
+            "shoeProductsContainer"
+        );
+
+    container.innerHTML = "";
+
+
+    shoeProducts.forEach(product => {
+
+        const discount =
+            Math.round(
+                (
+                    (product.oldPrice -
+                    product.price)
+                    /
+                    product.oldPrice
+                ) * 100
+            );
+
+
+        container.innerHTML += `
+
+            <div class="product">
+
+                <div
+                    class="card-image"
+                    onclick="openProduct(${product.id})"
+                >
+
+                    <img
+                        src="${product.images[0]}"
+                        alt="${product.name}"
+                    >
+
+                    <span class="view">
+                        View Details
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+
+                <p class="price">
+
+                    <del>
+                        ₹${product.oldPrice}
+                    </del>
+
+                    <strong>
+                        ₹${product.price}
+                    </strong>
+
+                </p>
+
+
+                <p class="discount">
+                    ${discount}% OFF
+                </p>
+
+
+                <button
+                    onclick="openProduct(${product.id})">
+                    View Product
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* ================================= */
+/* OPEN PRODUCT */
+/* ================================= */
+
+function openProduct(id) {
+
+    currentProduct =
+        shoeProducts.find(
+            product => product.id === id
+        );
+
+    currentImageIndex = 0;
+
+    selectedSize = "";
+
+
+    document.getElementById(
+        "detailName"
+    ).innerText =
+        currentProduct.name;
+
+
+    document.getElementById(
+        "detailOldPrice"
+    ).innerText =
+        "₹" + currentProduct.oldPrice;
+
+
+    document.getElementById(
+        "detailPrice"
+    ).innerText =
+        "₹" + currentProduct.price;
+
+
+    const discount =
+        Math.round(
+            (
+                (
+                    currentProduct.oldPrice -
+                    currentProduct.price
+                )
+                /
+                currentProduct.oldPrice
+            ) * 100
+        );
+
+
+    document.getElementById(
+        "detailDiscount"
+    ).innerText =
+        discount + "% OFF";
+
+
+    /* MAIN IMAGE */
+
+    document.getElementById(
+        "detailImage"
+    ).src =
+        currentProduct.images[0];
+
+
+    /* THUMBNAILS */
+
+    const thumbnails =
+        document.getElementById(
+            "thumbnails"
+        );
+
+    thumbnails.innerHTML = "";
+
+
+    currentProduct.images.forEach(
+        function(image, index) {
+
+            const img =
+                document.createElement(
+                    "img"
+                );
+
+            img.src = image;
+
+            img.alt =
+                "Shoe Image " +
+                (index + 1);
+
+
+            img.onclick =
+                function() {
+
+                    setImage(index);
+
+                };
+
+
+            thumbnails.appendChild(img);
+
+        }
+    );
+
+
+    createSizeButtons();
+
+    createSizeChart();
+
+
+    document.getElementById(
+        "productModal"
+    ).style.display =
+        "flex";
+
+}
+
+
+/* ================================= */
+/* CLOSE PRODUCT */
+/* ================================= */
+
+function closeProduct() {
+
+    document.getElementById(
+        "productModal"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ================================= */
+/* NEXT / PREVIOUS IMAGE */
+/* ================================= */
+
+function changeImage(direction) {
+
+    currentImageIndex += direction;
+
+
+    if (
+        currentImageIndex >=
+        currentProduct.images.length
+    ) {
+
+        currentImageIndex = 0;
+
+    }
+
+
+    if (
+        currentImageIndex < 0
+    ) {
+
+        currentImageIndex =
+            currentProduct.images.length - 1;
+
+    }
+
+
+    setImage(currentImageIndex);
+
+}
+
+
+/* ================================= */
+/* SET IMAGE */
+/* ================================= */
+
+function setImage(index) {
+
+    currentImageIndex = index;
+
+
+    document.getElementById(
+        "detailImage"
+    ).src =
+        currentProduct.images[index];
+
+}
+
+
+/* ================================= */
+/* CREATE SHOE SIZES */
+/* ================================= */
+
+function createSizeButtons() {
+
+    const sizes = [
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+    ];
+
+
+    const box =
+        document.getElementById(
+            "sizeButtons"
+        );
+
+    box.innerHTML = "";
+
+
+    sizes.forEach(
+        function(size) {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.innerText = size;
+
+
+            button.onclick =
+                function() {
+
+                    selectSize(button);
+
+                };
+
+
+            box.appendChild(button);
+
+        }
+    );
+
+}
+
+
+/* ================================= */
+/* SELECT SIZE */
+/* ================================= */
+
+function selectSize(button) {
+
+    document
+        .querySelectorAll(
+            "#sizeButtons button"
+        )
+        .forEach(
+            function(btn) {
+
+                btn.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    selectedSize =
+        button.innerText;
+
+}
+
+
+/* ================================= */
+/* SHOE SIZE CHART */
+/* ================================= */
+
+function createSizeChart() {
+
+    document.getElementById(
+        "sizeChart"
+    ).innerHTML = `
+
+        <table>
+
+            <tr>
+                <th>UK Size</th>
+                <th>Foot Length</th>
+            </tr>
+
+            <tr>
+                <td>6</td>
+                <td>24.5 cm</td>
+            </tr>
+
+            <tr>
+                <td>7</td>
+                <td>25.4 cm</td>
+            </tr>
+
+            <tr>
+                <td>8</td>
+                <td>26.2 cm</td>
+            </tr>
+
+            <tr>
+                <td>9</td>
+                <td>27.1 cm</td>
+            </tr>
+
+            <tr>
+                <td>10</td>
+                <td>27.9 cm</td>
+            </tr>
+
+            <tr>
+                <td>11</td>
+                <td>28.8 cm</td>
+            </tr>
+
+        </table>
+
+    `;
+
+}
+
+
+/* ================================= */
+/* ADD TO CART */
+/* ================================= */
+
+function addCurrentProductToCart() {
+
+    if (!selectedSize) {
+
+        alert(
+            "Please select a shoe size."
+        );
+
+        return;
+
+    }
+
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem(
+                "cart"
+            )
+        ) || [];
+
+
+    const existing =
+        cart.find(
+            product =>
+                product.name ===
+                currentProduct.name
+                &&
+                product.size ===
+                selectedSize
+        );
+
+
+    if (existing) {
+
+        existing.quantity++;
+
+    }
+
+    else {
+
+        cart.push({
+
+            name:
+                currentProduct.name,
+
+            price:
+                currentProduct.price,
+
+            image:
+                currentProduct.images[0],
+
+            size:
+                selectedSize,
+
+            quantity: 1
+
+        });
+
+    }
+
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    alert(
+        "Shoe added to cart!"
+    );
+
+}
+
+
+/* ================================= */
+/* CLOSE POPUP OUTSIDE CLICK */
+/* ================================= */
+
+window.onclick =
+    function(event) {
+
+        const modal =
+            document.getElementById(
+                "productModal"
+            );
+
+
+        if (
+            event.target === modal
+        ) {
+
+            closeProduct();
+
+        }
+
+    };
+
+
+/* ================================= */
+/* LOAD PRODUCTS */
+/* ================================= */
+
+renderShoes();
+
+</script>
+
+</body>
+
+</html>

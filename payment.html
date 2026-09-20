@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment - DESIGNER</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">DESIGNER</div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="jeans.html">Jeans</a>
+        <a href="shoes.html">Shoes</a>
+        <a href="cart.html">🛒 Cart</a>
+    </nav>
+
+</header>
+
+
+<section class="payment-page">
+
+    <div class="payment-box">
+
+        <h2>COD Order</h2>
+
+        <p>
+            Pay the delivery charge in advance
+            to confirm your Cash on Delivery order.
+        </p>
+
+
+        <!-- DELIVERY CHARGE -->
+
+        <div class="delivery-charge">
+
+            <h3>Advance Delivery Charge</h3>
+
+            <h1>₹99</h1>
+
+        </div>
+
+
+        <!-- UPI INFORMATION -->
+
+        <div class="upi-section">
+
+            <h3>Pay ₹99 via UPI</h3>
+
+            <p class="upi-text">
+                UPI ID:
+                <strong>faishal809233@slc</strong>
+            </p>
+
+
+            <!-- UPI PAYMENT BUTTON -->
+
+            <a
+                href="upi://pay?pa=8092339385@slc&pn=DESIGNER&am=99&cu=INR"
+                class="upi-pay-btn"
+            >
+                💳 Pay ₹99 via UPI
+            </a>
+
+            <p class="upi-note">
+                Tap the button and complete the ₹99 payment
+                using your UPI app.
+            </p>
+
+        </div>
+
+
+        <!-- UTR -->
+
+        <div class="utr-section">
+
+            <h3>After Payment</h3>
+
+            <p>
+                Enter your UTR / Transaction ID below.
+            </p>
+
+            <input
+                type="text"
+                id="utr"
+                placeholder="Enter UTR / Transaction ID"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <!-- SUBMIT ORDER -->
+
+        <button
+            class="payment-submit"
+            onclick="submitOrder()"
+        >
+            Submit COD Order
+        </button>
+
+
+        <p class="payment-note">
+
+            Your ₹99 payment will be checked manually.
+            The remaining product amount will be paid
+            at the time of delivery.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    © 2026 DESIGNER Men's Fashion Store
+
+</footer>
+
+
+
+<script>
+
+/* ================================
+   SUBMIT COD ORDER
+================================ */
+
+async function submitOrder() {
+
+    /* Get Cart */
+
+    const cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
+
+
+    if (!cart.length) {
+
+        alert("Your cart is empty!");
+
+        window.location.href = "cart.html";
+
+        return;
+    }
+
+
+    /* Get Customer Details */
+
+    const customer =
+        JSON.parse(
+            localStorage.getItem("customerDetails")
+        );
+
+
+    if (!customer) {
+
+        alert(
+            "Delivery details are missing. Please go back to cart."
+        );
+
+        window.location.href = "cart.html";
+
+        return;
+    }
+
+
+    /* Get UTR */
+
+    const utr =
+        document
+        .getElementById("utr")
+        .value
+        .trim();
+
+
+    if (!utr) {
+
+        alert(
+            "Please enter your UTR / Transaction ID."
+        );
+
+        return;
+    }
+
+
+    /* Calculate Product Total */
+
+    let productTotal = 0;
+
+    let orderDetails = "";
+
+
+    cart.forEach(product => {
+
+        const itemTotal =
+            product.price *
+            product.quantity;
+
+
+        productTotal += itemTotal;
+
+
+        orderDetails +=
+            product.name +
+            " | Size: " +
+            (product.size || "Not selected") +
+            " | Qty: " +
+            product.quantity +
+            " | ₹" +
+            itemTotal +
+            "\n";
+
+    });
+
+
+    /* Email Data */
+
+    const emailData = {
+
+        _subject:
+            "NEW COD ORDER - ₹99 PAYMENT CLAIMED - DESIGNER",
+
+        customer_name:
+            customer.name,
+
+        customer_phone:
+            customer.phone,
+
+        customer_address:
+            customer.address,
+
+        customer_city:
+            customer.city,
+
+        customer_pincode:
+            customer.pincode,
+
+        order_details:
+            orderDetails,
+
+        product_total:
+            "₹" + productTotal,
+
+        advance_delivery_charge:
+            "₹99",
+
+        payment_method:
+            "UPI - Advance Delivery Charge",
+
+        upi_id:
+            "8092339385@slc",
+
+        transaction_utr:
+            utr,
+
+        payment_status:
+            "PAYMENT CLAIMED - VERIFY MANUALLY",
+
+        remaining_cod_amount:
+            "₹" + productTotal
+
+    };
+
+
+    try {
+
+        const response = await fetch(
+
+            "https://formsubmit.co/ajax/faishal76342@gmail.com",
+
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json",
+
+                    "Accept":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(emailData)
+
+            }
+
+        );
+
+
+        if (response.ok) {
+
+            alert(
+                "Order submitted successfully! Your ₹99 payment will be verified before the order is confirmed."
+            );
+
+
+            /* Clear Cart */
+
+            localStorage.removeItem("cart");
+
+            localStorage.removeItem(
+                "customerDetails"
+            );
+
+            localStorage.removeItem(
+                "orderTotal"
+            );
+
+
+            /* Go Home */
+
+            window.location.href =
+                "index.html";
+
+        }
+
+        else {
+
+            alert(
+                "Order could not be submitted. Please try again."
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Network error. Please check your internet connection."
+        );
+
+    }
+
+}
+
+</script>
+
+
+<style>
+
+/* ================================
+   UPI PAYMENT SECTION
+================================ */
+
+.upi-section {
+
+    margin-top: 25px;
+
+    padding: 22px;
+
+    background: #f8f8f8;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 12px;
+
+}
+
+
+.upi-section h3 {
+
+    margin-top: 0;
+
+    font-size: 20px;
+
+}
+
+
+.upi-text {
+
+    margin: 10px 0 18px;
+
+    color: #555;
+
+}
+
+
+.upi-text strong {
+
+    color: #111;
+
+    font-size: 17px;
+
+}
+
+
+.upi-pay-btn {
+
+    display: block;
+
+    width: 100%;
+
+    padding: 15px;
+
+    background: #25a244;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    transition: 0.2s;
+
+}
+
+
+.upi-pay-btn:hover {
+
+    background: #1e8739;
+
+    transform: translateY(-1px);
+
+}
+
+
+.upi-note {
+
+    font-size: 12px !important;
+
+    color: #777 !important;
+
+    margin-top: 12px !important;
+
+}
+
+
+/* ================================
+   UTR SECTION
+================================ */
+
+.utr-section {
+
+    margin-top: 25px;
+
+    text-align: left;
+
+}
+
+
+.utr-section h3 {
+
+    margin-bottom: 5px;
+
+}
+
+
+.utr-section p {
+
+    color: #666;
+
+    font-size: 14px;
+
+}
+
+
+.utr-section input {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 7px;
+
+    font-size: 16px;
+
+    outline: none;
+
+}
+
+
+.utr-section input:focus {
+
+    border-color: #111;
+
+}
+
+
+/* ================================
+   SUBMIT BUTTON
+================================ */
+
+.payment-submit {
+
+    margin-top: 20px;
+
+    background: #111 !important;
+
+    color: #fff !important;
+
+}
+
+
+.payment-submit:hover {
+
+    background: #333 !important;
+
+}
+
+</style>
+
+</body>
+</html>
