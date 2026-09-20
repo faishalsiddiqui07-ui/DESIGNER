@@ -1,29 +1,57 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>DESIGNER Men's Fashion Store</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
 <header>
+
     <div class="logo">DESIGNER</div>
+
     <nav>
+
     <a href="index.html">Home</a>
+
     <a href="index.html#products">Shirts</a>
+
     <a href="jeans.html">Jeans</a>
+
     <a href="shoes.html">Shoes</a>
+
+    <a href="tracking.html">Track Order</a>
+
+    <a href="account.html">Profile</a>
+
+    <a href="orders.html">My Orders</a>
+
     <a href="cart.html">
+
         🛒 Cart (<span id="cartCount">0</span>)</a>
+
 </nav>
+
 </header>
 
 <section class="hero">
+
     <h1>Men's Fashion Store</h1>
+
     <p>100+ Products • Premium Fashion • Best Prices</p>
+
     <a href="#products"><button>Shop Now</button></a>
+
 </section>
 
 <!-- SHOP BY CATEGORY -->
@@ -35,21 +63,33 @@
     <div class="category-grid">
 
         <a href="#products" class="category-card">
+
             <h3>👕 Shirts</h3>
+
             <p>Explore Men's Shirts</p>
+
             <button>Shop Shirts</button>
+
         </a>
 
         <a href="jeans.html" class="category-card">
+
             <h3>👖 Jeans</h3>
+
             <p>Explore Men's Jeans</p>
+
             <button>Shop Jeans</button>
+
         </a>
 
         <a href="shoes.html" class="category-card">
+
             <h3>👟 Shoes</h3>
+
             <p>Explore Men's Shoes</p>
+
             <button>Shop Shoes</button>
+
         </a>
 
     </div>
@@ -57,348 +97,682 @@
 </section>
 
 <section id="products">
+
     <h2>Our Products</h2>
+
     <div id="productGrid" class="products"></div>
+
 </section>
 
 <!-- Product details popup -->
+
 <div id="productModal" class="modal">
+
     <div class="modal-box">
+
         <button class="close" onclick="closeProduct()">×</button>
 
         <div class="detail-grid">
+
             <div>
+
                 <div class="main-photo-wrap">
+
                     <button class="slide prev" onclick="slideImage(-1)">❮</button>
+
                     <img id="detailImage" class="detail-image" src="" alt="">
+
                     <button class="slide next" onclick="slideImage(1)">❯</button>
+
                 </div>
+
                 <div id="thumbs" class="thumbs"></div>
+
             </div>
 
             <div class="details">
+
                 <h2 id="detailName"></h2>
+
                 <p><del id="detailOldPrice"></del> <strong id="detailPrice"></strong></p>
+
                 <p class="discount" id="detailDiscount"></p>
 
-                <h3>Select Size</h3>
+                                <h3>Select Size</h3>
+
                 <div id="sizes" class="sizes">
+
                     <button onclick="selectSize(this)">S</button>
+
                     <button onclick="selectSize(this)">M</button>
+
                     <button onclick="selectSize(this)">L</button>
+
                     <button onclick="selectSize(this)">XL</button>
+
                     <button onclick="selectSize(this)">XXL</button>
+
                 </div>
 
                 <h3>Size & Measurements</h3>
+
                 <table>
+
                     <tr><th>Size</th><th>Chest</th><th>Length</th><th>Shoulder</th></tr>
+
                     <tr><td>S</td><td>38"</td><td>27"</td><td>17"</td></tr>
+
                     <tr><td>M</td><td>40"</td><td>28"</td><td>18"</td></tr>
+
                     <tr><td>L</td><td>42"</td><td>29"</td><td>19"</td></tr>
+
                     <tr><td>XL</td><td>44"</td><td>30"</td><td>20"</td></tr>
+
                     <tr><td>XXL</td><td>46"</td><td>31"</td><td>21"</td></tr>
+
                 </table>
 
                 <p>Premium fabric • Regular fit • Machine washable</p>
+
                 <button class="cart-btn" onclick="addCurrentToCart()">Add to Cart</button>
+
                 <a class="cart-link-button" href="cart.html">Go to Cart</a>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
 
 <footer>© 2026 DESIGNER Men's Fashion Store • Saharsa, Bihar</footer>
 
 <script>
+
 const products = [
+
     {
+
         "id": 1,
+
         "name": "Textured Tailored Fit Shirt",
+
         "price": 2719,
+
         "oldPrice": 3199,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_2e7a1444-789b-4885-a6cc-4ecb233c80ec.jpg?v=1769070703&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/5_52f5f9fc-a504-45cd-86c2-04aca2b539a0.jpg?v=1769070703&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/7_c73ee038-5afe-4ea7-b225-927b2eefff93.jpg?v=1769070703&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/2_4fb02e57-7395-465d-8bcb-e14fd61a4ea6.jpg?v=1769070703&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/8_6d158d82-efc5-4667-bc21-7ce5f6f5961c.jpg?v=1769070704&width=1200"
+
         ]
+
     },
+
     {
+
         "id": 2,
+
         "name": "Grey Solid Tailored Fit Shirt",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_cb012cd1-964c-4d76-9716-751941dde1e4.jpg?v=1776082650",
+
             "https://uspoloassn.in/cdn/shop/files/5_907fe5c1-ae96-46bc-9dd3-3fdce037ec0c.jpg?v=1776082650",
+
             "https://uspoloassn.in/cdn/shop/files/4_07c2d84b-3314-44f2-a315-54f2b9d58829.jpg?v=1776082650",
+
             "https://uspoloassn.in/cdn/shop/files/2_eaed46d1-a38e-4a93-94ed-2171ca20c678.jpg?v=1776082651"
-        ]
+            ]
+
     },
+
     {
+
         "id": 3,
+
         "name": "Light Blue Solid Tailored Fit Shirt",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_947443f4-71dd-42e8-b48f-60775088bdaa.jpg?v=1776082652&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/5_d2124580-3098-46ed-a22d-d4886c18a611.jpg?v=1776082652&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/4_4f2ec559-8a0c-4ae9-af76-9762ae56bfa6.jpg?v=1776082652&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/2_9c8f7d18-60fa-42be-aaec-511fb8d2e999.jpg?v=1776082652&width=1200"
+
         ]
+
     },
+
     {
+
         "id": 4,
+
         "name": "Ivory Solid Tailored Fit Shirt",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_cb165994-7127-4de6-b562-886b04bdd7ab.jpg?v=1776082653",
+
             "https://uspoloassn.in/cdn/shop/files/3_c136f235-f42f-4cf5-9dd5-b9740ed150aa.jpg?v=1776082653",
+
             "https://uspoloassn.in/cdn/shop/files/5_5989fb14-a6be-4115-b4bd-35577cabc2d9.jpg?v=1776082653",
+
             "https://uspoloassn.in/cdn/shop/files/2_5f58230e-cbe5-4aa9-84f4-d43f80b36e5a.jpg?v=1776082654"
+
         ]
+
     },
+
     {
+
         "id": 5,
+
         "name": "Black Solid Tailored Fit Shirt",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_7922ee75-3cce-4094-b196-d8d5ee11c593.jpg?v=1776082650",
+
             "https://uspoloassn.in/cdn/shop/files/5_4baae834-3a33-4f74-b2ab-f2ed24a15fcd.jpg?v=1776082650",
+
             "https://uspoloassn.in/cdn/shop/files/4_d43a31d6-0246-4ede-b653-f56773af5491.jpg?v=1776082651",
+
             "https://uspoloassn.in/cdn/shop/files/2_045145d1-152d-4020-832a-2f44d86c3e73.jpg?v=1776082651"
+
         ]
+
     },
+
     {
+
         "id": 6,
+
         "name": "Solid Formal Shirt 1",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_1b1cad85-9fae-4901-a18a-bdcbf0c0fc09.jpg?v=1772615532",
+
             "https://uspoloassn.in/cdn/shop/files/3_7658f9c1-183d-4b8f-878a-209761ca1a75.jpg?v=1772615531",
+
             "https://uspoloassn.in/cdn/shop/files/5_fa15fb25-45dd-485a-b4fc-597f38fe2c75.jpg?v=1772615531",
+
             "https://uspoloassn.in/cdn/shop/files/2_318d070c-abad-4b1d-bda0-b24d07c4ac42.jpg?v=1772615532"
+
         ]
+
     },
+
     {
+
         "id": 7,
+
         "name": "White Solid Linen Regular Fit Shirt",
+
         "price": 2804,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_173a18d0-a4d8-4848-bac3-2270c22b83a0.jpg?v=1784881689",
+
             "https://uspoloassn.in/cdn/shop/files/3_bb55c415-4a9b-459b-952f-c772f16ca425.jpg?v=1784881689",
+
             "https://uspoloassn.in/cdn/shop/files/5_3d5ff1e7-ac31-405f-ae1a-343b1c322182.jpg?v=1784881689",
+
             "https://uspoloassn.in/cdn/shop/files/2_8ed95b35-5844-4cb2-9d24-26617ba07dff.jpg?v=1784881689",
+
             "https://uspoloassn.in/cdn/shop/files/8_f6fabbfa-8f6b-411b-a22e-a209ba046cda.jpg?v=1784881689"
 
         ]
+
     },
+
     {
+
         "id": 8,
+
         "name": "Maroon Solid Linen Regular Fit Shirt",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_42436261-bd60-4416-a584-b1693fa08581.jpg?v=1785235319",
+
             "https://uspoloassn.in/cdn/shop/files/3_5ade524e-e786-4fdf-9b43-1bfcd939f1c0.jpg?v=1785235319",
+
             "https://uspoloassn.in/cdn/shop/files/5_e5af38d7-b0d6-4894-b606-655d53e741c9.jpg?v=1785235320",
+
             "https://uspoloassn.in/cdn/shop/files/8_bd1d4b47-3632-41d9-bf23-c75ee3bcdf78.jpg?v=1785235319",
+
             "https://uspoloassn.in/cdn/shop/files/2_dc2a784c-9a1e-4a1c-b420-5e84b1078f77.jpg?v=1785235319"
+
         ]
+
     },
+
     {
+
         "id": 9,
+
         "name": "khaki Solid Linen Regular Fit Shirt",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_06367b4c-2ef1-4952-9dbb-986dbc808e17.jpg?v=1787817303",
+
             "https://uspoloassn.in/cdn/shop/files/3_be6bb019-f516-4d77-ba32-ffef3b13d4c6.jpg?v=1787817303",
+
             "https://uspoloassn.in/cdn/shop/files/5_ea34e1fe-7ca6-42b3-9815-d4c205465b04.jpg?v=1787817303",
+
             "https://uspoloassn.in/cdn/shop/files/8_ff477588-c006-428c-8312-4c48c1402943.jpg?v=1787817303",
+
             "https://uspoloassn.in/cdn/shop/files/2_ceab3a8d-b4aa-4081-af39-c22efb5dca7c.jpg?v=1787817302"
+
         ]
+
     },
+
     {
+
         "id": 10,
+
         "name": "Blue Solid Tailored Fit Shirt",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_e3a014f7-f3fc-4a75-937b-52c3dee9a82e.jpg?v=1787817301",
+
             "https://uspoloassn.in/cdn/shop/files/3_622c901e-3cff-40d8-a727-c477fd7e8dd5.jpg?v=1787817301",
+
             "https://uspoloassn.in/cdn/shop/files/5_6b778a7e-6781-411d-a6d5-6361b79846bd.jpg?v=1787817300",
+
             "https://uspoloassn.in/cdn/shop/files/7_ce0e87f1-eb1e-407e-9baa-726e116f350e.jpg?v=1787817300",
+
             "https://uspoloassn.in/cdn/shop/files/8_d9c09db1-0cb8-4671-9b21-35abb8a6bec3.jpg?v=1787817301",
+
             "https://uspoloassn.in/cdn/shop/files/2_2f72589d-d027-4859-9f18-d6ea8cbe5391.jpg?v=1787817301"
+
         ]
+
     },
+
     {
+
         "id": 11,
+
         "name": "Brand Embroidered Slim Fit Polo Shirt (Off White)",
+
         "price": 2804,
+
         "oldPrice": 3299,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_ba22b9c3-3933-4af0-8b58-0488f55534fe.jpg?v=1783928042",
+
             "https://uspoloassn.in/cdn/shop/files/3_9863075b-e7d0-4a42-a3aa-25b70c8550e9.jpg?v=1783928042",
+
             "https://uspoloassn.in/cdn/shop/files/4_ea620acf-ca8e-4144-9686-1738dc947628.jpg?v=1783928043",
-            
+
         ]
+
     },
+
     {
+
         "id": 12,
+
         "name": "Off white Slim Fit Polo Shirt",
+
         "price": 2974,
+
         "oldPrice": 3499,
-        "images": [
-            "https://uspoloassn.in/cdn/shop/files/1_3e2522ea-2466-4943-8266-a75983dfcc9c.jpg?v=1784881634",
+
+        "images": [            "https://uspoloassn.in/cdn/shop/files/1_3e2522ea-2466-4943-8266-a75983dfcc9c.jpg?v=1784881634",
+
             "https://uspoloassn.in/cdn/shop/files/5_0a568bd8-e58a-4047-964f-ec1da1076cb1.jpg?v=1784881634&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/7_62bd59f0-c2c5-4075-9f43-3ec7b587b534.jpg?v=1784881634&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/2_3840b7ef-e5c7-48c5-9b02-c25d79f5009d.jpg?v=1784881634&width=1200"
+
         ]
+
     },
+
     {
+
         "id": 13,
+
         "name": "Navy Blue Shirt 1",
+
         "price": 2974,
+
         "oldPrice": 3499,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_d7a40db0-e028-4c36-abd4-d48959b2b6c4.jpg?v=1783928043",
+
             "https://uspoloassn.in/cdn/shop/files/5_483d5571-e5c0-4dd0-8c90-4ff044d88b32.jpg?v=1783928042&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/2_2f66aeec-c110-409c-aeea-3485a97b78b3.jpg?v=1783928043"
+
         ]
+
     },
+
     {
+
         "id": 14,
+
         "name": "Navy Blue polo Shirt",
+
         "price": 2804,
+
         "oldPrice": 3299,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_5b10d936-0411-4bd6-bf15-a04d98f73753.jpg?v=1787661335",
+
             "https://uspoloassn.in/cdn/shop/files/5_186cff33-f403-4486-b34d-b48401511c56.jpg?v=1787661335&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/2_36244d56-e54c-407f-b565-95fd207ada6c.jpg?v=1787661335&width=1200"
+
         ]
+
     },
+
     {
+
         "id": 15,
+
         "name": "Olive Green Shirt 1",
+
         "price": 2804,
+
         "oldPrice": 3299,
+
         "images": [
+
             "https://uspoloassn.in/cdn/shop/files/1_74070e14-126e-4e57-b6b4-4c3456406f7b.jpg?v=1787661333",
+
             "https://uspoloassn.in/cdn/shop/files/5_9d97e0db-72ec-481e-a1b8-2438f4314faf.jpg?v=1787661334&width=1200",
+
             "https://uspoloassn.in/cdn/shop/files/2_8599f2e2-0f2b-4d7d-9544-f5e52de05fb8.jpg?v=1787661334&width=1200"
+
         ]
+
     },
-   
+
 ];
 
 let currentProduct = null;
+
 let currentImageIndex = 0;
+
 let selectedSize = "";
 
 function money(n) {
+
     return "₹" + Number(n).toLocaleString("en-IN");
+
 }
 
 function discount(oldPrice, price) {
+
     return Math.round(((oldPrice - price) / oldPrice) * 100);
+
 }
 
 function renderProducts() {
-    const grid = document.getElementById("productGrid");
-    grid.innerHTML = products.map(p => `
-        <div class="product">
-            <div class="card-image" onclick="openProduct(${p.id})">
-                <img src="${p.images[0]}" alt="${p.name}">
-                <span class="view">View Details</span>
-            </div>
-            <h3>${p.name}</h3>
-            <p class="price"><del>${money(p.oldPrice)}</del> <strong>${money(p.price)}</strong></p>
-            <p class="discount">${discount(p.oldPrice,p.price)}% OFF</p>
-            <button onclick="addToCart(${p.id})">Add to Cart</button>
-        </div>
-    `).join("");
-}
 
-function openProduct(id) {
+    const grid = document.getElementById("productGrid");
+
+    grid.innerHTML = products.map(p => `
+
+        <div class="product">
+
+            <div class="card-image" onclick="openProduct(${p.id})">
+
+                <img src="${p.images[0]}" alt="${p.name}">
+
+                <span class="view">View Details</span>
+
+            </div>
+
+            <h3>${p.name}</h3>
+
+            <p class="price"><del>${money(p.oldPrice)}</del> <strong>${money(p.price)}</strong></p>
+
+            <p class="discount">${discount(p.oldPrice,p.price)}% OFF</p>
+
+            <button onclick="addToCart(${p.id})">Add to Cart</button>
+
+        </div>
+
+    `).join("");
+
+}function openProduct(id) {
+
     currentProduct = products.find(p => p.id === id);
+
     currentImageIndex = 0;
+
     selectedSize = "";
+
     document.getElementById("detailName").innerText = currentProduct.name;
+
     document.getElementById("detailOldPrice").innerText = money(currentProduct.oldPrice);
+
     document.getElementById("detailPrice").innerText = money(currentProduct.price);
+
     document.getElementById("detailDiscount").innerText = discount(currentProduct.oldPrice,currentProduct.price) + "% OFF";
+
     document.getElementById("detailImage").src = currentProduct.images[0];
 
     document.getElementById("thumbs").innerHTML = currentProduct.images.map((img,i) =>
+
         `<img src="${img}" onclick="setDetailImage(${i})" alt="Product image ${i+1}">`
+
     ).join("");
 
     document.querySelectorAll(".sizes button").forEach(b => b.classList.remove("selected"));
+
     document.getElementById("productModal").style.display = "flex";
+
 }
 
 function closeProduct() {
+
     document.getElementById("productModal").style.display = "none";
+
 }
 
 function setDetailImage(i) {
+
     currentImageIndex = i;
+
     document.getElementById("detailImage").src = currentProduct.images[i];
+
 }
 
 function slideImage(dir) {
+
     currentImageIndex = (currentImageIndex + dir + currentProduct.images.length) % currentProduct.images.length;
+
     setDetailImage(currentImageIndex);
+
 }
 
 function selectSize(btn) {
+
     document.querySelectorAll(".sizes button").forEach(b => b.classList.remove("selected"));
+
     btn.classList.add("selected");
+
     selectedSize = btn.innerText;
+
 }
 
 function addToCart(id) {
+
     const p = products.find(x => x.id === id);
+
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
     const existing = cart.find(x => x.id === id && x.size === "");
+
     if (existing) existing.quantity++;
+
     else cart.push({id:p.id, name:p.name, price:p.price, image:p.images[0], quantity:1, size:""});
+
     localStorage.setItem("cart", JSON.stringify(cart));
+
     updateCartCount();
+
     alert("Product added to cart!");
+
 }
 
 function addCurrentToCart() {
+
     if (!currentProduct) return;
+
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
     const size = selectedSize || "Not selected";
+
     const existing = cart.find(x => x.id === currentProduct.id && x.size === size);
+
     if (existing) existing.quantity++;
+
     else cart.push({id:currentProduct.id, name:currentProduct.name, price:currentProduct.price, image:currentProduct.images[0], quantity:1, size:size});
+
     localStorage.setItem("cart", JSON.stringify(cart));
+
     updateCartCount();
+
     alert("Product added to cart!");
+
 }
 
 function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    document.getElementById("cartCount").innerText = cart.reduce((sum,x)=>sum+x.quantity,0);
-}
 
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    document.getElementById("cartCount").innerText = cart.reduce((sum,x)=>sum+x.quantity,0);
+
+}
 window.onclick = function(e) {
+
     if (e.target === document.getElementById("productModal")) closeProduct();
+
 };
 
 renderProducts();
+
 updateCartCount();
+
 </script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCn31gZSJVbqwvaynLjgN3UG2LQnJBUQ1g",
+    authDomain: "designer-2adf7.firebaseapp.com",
+    projectId: "designer-2adf7",
+    storageBucket: "designer-2adf7.firebasestorage.app",
+    messagingSenderId: "881475406678",
+    appId: "1:881475406678:web:6786a0e63f8b21a87564f7",
+    measurementId: "G-SWZE9D4Z0H"
+  };
+
+  try {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const accountNav = document.querySelector('a[href="account.html"]');
+    const ordersNav = document.querySelector('a[href="orders.html"]');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (accountNav) {
+          accountNav.textContent = "Profile";
+          accountNav.href = "account.html";
+        }
+
+        if (ordersNav) {
+          ordersNav.textContent = "My Orders";
+          ordersNav.href = "orders.html";
+        }
+      } else {
+        if (accountNav) {
+          accountNav.textContent = "Login";
+          accountNav.href = "login.html";
+        }
+
+        if (ordersNav) {
+          ordersNav.textContent = "My Orders";
+          ordersNav.href = "login.html";
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Firebase auth setup error:", error);
+  }
+</script>
+
 </body>
+
 </html>

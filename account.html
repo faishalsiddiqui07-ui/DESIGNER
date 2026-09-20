@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account - DESIGNER</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 14px;
+    }
+
+    .container {
+      width: 900px;
+      max-width: 92%;
+      margin: 35px auto;
+    }
+
+    .title {
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #111;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 7px;
+      background: #111;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #333;
+    }
+
+    .danger {
+      background: #b00020;
+    }
+
+    .danger:hover {
+      background: #8b0019;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: white;
+      background: #111;
+      padding: 12px 18px;
+      border-radius: 7px;
+      font-weight: bold;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    DESIGNER
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="tracking.html">Track Order</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+
+</header>
+
+
+<div class="container">
+
+  <h1 class="title">My Account</h1>
+
+
+  <!-- PROFILE -->
+
+  <div class="card">
+
+    <h2>My Profile</h2>
+
+    <label>Full Name</label>
+
+    <input
+      type="text"
+      id="name"
+      placeholder="Your name"
+    >
+
+
+    <label>Email</label>
+
+    <input
+      type="email"
+      id="email"
+      readonly
+    >
+
+
+    <label>Phone</label>
+
+    <input
+      type="text"
+      id="phone"
+      placeholder="Phone number"
+    >
+
+
+    <label>Address</label>
+
+    <input
+      type="text"
+      id="address"
+      placeholder="Full address"
+    >
+
+
+    <label>City</label>
+
+    <input
+      type="text"
+      id="city"
+      placeholder="City"
+    >
+
+
+    <label>Pincode</label>
+
+    <input
+      type="text"
+      id="pincode"
+      placeholder="Pincode"
+    >
+
+
+    <button onclick="saveProfile()">
+      Save Profile
+    </button>
+
+    <div id="message"></div>
+
+  </div>
+
+
+  <!-- ACCOUNT LINKS -->
+
+  <div class="card">
+
+    <h2>My Orders</h2>
+
+    <div class="links">
+
+      <a href="orders.html">
+        📦 View My Orders
+      </a>
+
+      <a href="tracking.html">
+        🚚 Track Order
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOGOUT -->
+
+  <div class="card">
+
+    <button
+      class="danger"
+      onclick="logoutUser()"
+    >
+      Logout
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+
+    apiKey: "AIzaSyCn31gZSJVbqwvaynLjgN3UG2LQnJBUQ1g",
+
+    authDomain: "designer-2adf7.firebaseapp.com",
+
+    projectId: "designer-2adf7",
+
+    storageBucket: "designer-2adf7.firebasestorage.app",
+
+    messagingSenderId: "881475406678",
+
+    appId: "1:881475406678:web:6786a0e63f8b21a87564f7",
+
+    measurementId: "G-SWZE9D4Z0H"
+
+  };
+
+
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+  const db = getFirestore(app);
+
+
+  let currentUser = null;
+
+
+  onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+      window.location.href = "login.html";
+
+      return;
+
+    }
+
+
+    currentUser = user;
+
+    document.getElementById("email").value =
+      user.email || "";
+
+
+    const profileRef =
+      doc(db, "users", user.uid);
+
+    const profileSnap =
+      await getDoc(profileRef);
+
+
+    if (profileSnap.exists()) {
+
+      const data = profileSnap.data();
+
+      document.getElementById("name").value =
+        data.name || "";
+
+      document.getElementById("phone").value =
+        data.phone || "";
+
+      document.getElementById("address").value =
+        data.address || "";
+
+      document.getElementById("city").value =
+        data.city || "";
+
+      document.getElementById("pincode").value =
+        data.pincode || "";
+
+    }
+
+  });
+
+
+  window.saveProfile = async function() {
+
+    if (!currentUser) return;
+
+
+    const data = {
+
+      uid: currentUser.uid,
+
+      name:
+        document.getElementById("name").value.trim(),
+
+      email:
+        currentUser.email || "",
+
+      phone:
+        document.getElementById("phone").value.trim(),
+
+      address:
+        document.getElementById("address").value.trim(),
+
+      city:
+        document.getElementById("city").value.trim(),
+
+      pincode:
+        document.getElementById("pincode").value.trim()
+
+    };
+
+
+    try {
+
+      await setDoc(
+        doc(db, "users", currentUser.uid),
+        data,
+        { merge: true }
+      );
+
+
+      document.getElementById("message").innerText =
+        "Profile saved successfully.";
+
+      document.getElementById("message").style.color =
+        "green";
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+      document.getElementById("message").innerText =
+        "Unable to save profile.";
+
+      document.getElementById("message").style.color =
+        "red";
+
+    }
+
+  };
+
+
+  window.logoutUser = async function() {
+
+    await signOut(auth);
+
+    localStorage.removeItem("designerUser");
+
+    window.location.href = "index.html";
+
+  };
+
+</script>
+
+</body>
+</html>

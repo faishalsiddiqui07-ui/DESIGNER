@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Order Confirmed - DESIGNER</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.success-page {
+    min-height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.success-box {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    padding: 40px 30px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f7e8;
+    border-radius: 50%;
+    font-size: 42px;
+}
+
+.success-box h1 {
+    margin-bottom: 10px;
+}
+
+.success-message {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.order-card {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.order-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-row:last-child {
+    border-bottom: none;
+}
+
+.order-row span:first-child {
+    color: #666;
+}
+
+.order-row span:last-child {
+    font-weight: bold;
+}
+
+.order-id {
+    font-size: 17px;
+}
+
+.success-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.success-buttons a {
+    text-decoration: none;
+    padding: 13px 22px;
+    border-radius: 9px;
+    font-weight: bold;
+}
+
+.home-btn {
+    background: #111;
+    color: white;
+}
+
+.track-btn {
+    background: #eee;
+    color: #111;
+}
+
+.note {
+    margin-top: 25px;
+    font-size: 13px;
+    color: #777;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        DESIGNER
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">🛒 Cart</a>
+    </nav>
+
+</header>
+
+
+<section class="success-page">
+
+    <div class="success-box">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>
+            Order Placed Successfully!
+        </h1>
+
+        <p class="success-message">
+            Thank you for shopping with DESIGNER.
+            Your Cash on Delivery order has been received.
+        </p>
+
+
+        <div class="order-card">
+
+            <div class="order-row">
+                <span>Order ID</span>
+
+                <span
+                    class="order-id"
+                    id="orderId">
+                    —
+                </span>
+            </div>
+
+
+            <div class="order-row">
+                <span>Payment</span>
+
+                <span id="paymentMethod">
+                    Cash on Delivery
+                </span>
+            </div>
+
+
+            <div class="order-row">
+                <span>Total Amount</span>
+
+                <span>
+                    ₹<span id="orderTotal">0</span>
+                </span>
+            </div>
+
+
+            <div class="order-row">
+                <span>Status</span>
+
+                <span>
+                    Order Received
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="success-buttons">
+
+            <a
+                href="index.html"
+                class="home-btn">
+                Continue Shopping
+            </a>
+
+            <a
+                href="tracking.html"
+                class="track-btn">
+                Track Order
+            </a>
+
+        </div>
+
+
+        <p class="note">
+            Please save your Order ID for tracking your order.
+        </p>
+
+    </div>
+
+</section>
+
+
+<footer>
+    © 2026 DESIGNER Men's Fashion Store
+</footer>
+
+
+<script>
+
+const orderId =
+    localStorage.getItem("lastOrderId") || "—";
+
+const total =
+    localStorage.getItem("lastOrderTotal") || "0";
+
+const payment =
+    localStorage.getItem("lastPaymentMethod")
+    || "Cash on Delivery";
+
+
+document.getElementById("orderId").innerText =
+    orderId;
+
+document.getElementById("orderTotal").innerText =
+    total;
+
+document.getElementById("paymentMethod").innerText =
+    payment;
+
+</script>
+
+</body>
+
+</html>

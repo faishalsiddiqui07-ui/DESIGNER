@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Track Your Order - DESIGNER</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.tracking-page {
+    min-height: 75vh;
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.tracking-box {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+    text-align: center;
+}
+
+.tracking-box h1 {
+    margin-bottom: 10px;
+}
+
+.tracking-box > p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.track-input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.track-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #111;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.track-button:hover {
+    background: #333;
+}
+
+#trackingResult {
+    margin-top: 25px;
+    text-align: left;
+}
+
+.order-card {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.order-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.order-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-row:last-of-type {
+    border-bottom: none;
+}
+
+.order-row strong {
+    color: #222;
+}
+
+.order-row span {
+    text-align: right;
+}
+
+.status {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 20px;
+    background: #111;
+    color: white;
+    font-weight: bold;
+}
+
+.delivery-date {
+    color: #008000;
+    font-weight: bold;
+}
+
+.error-message {
+    padding: 15px;
+    background: #ffecec;
+    color: #b00020;
+    border-radius: 8px;
+}
+
+.loading {
+    text-align: center;
+    padding: 15px;
+}
+
+
+/* =========================
+   ORDER PROGRESS
+========================= */
+
+.progress {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+}
+
+.progress h3 {
+    margin: 0 0 20px 0;
+    font-size: 22px;
+}
+
+.progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.progress-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.progress-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: bold;
+}
+
+.progress-item.completed {
+    color: #008000;
+    background: #f1fff1;
+}
+
+.progress-item.completed .progress-icon {
+    background: #008000;
+    color: white;
+}
+
+.progress-item.current {
+    color: #111;
+    background: #f2f2f2;
+    font-weight: bold;
+}
+
+.progress-item.current .progress-icon {
+    background: #111;
+    color: white;
+}
+
+.progress-item.pending {
+    color: #999;
+    background: #fafafa;
+}
+
+.progress-item.pending .progress-icon {
+    border: 2px solid #bbb;
+    color: #999;
+    background: white;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .tracking-box {
+        padding: 25px 18px;
+    }
+
+    .order-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .order-row span {
+        text-align: left;
+    }
+
+    .progress-item {
+        font-size: 15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        DESIGNER
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="cart.html">
+            🛒 Cart
+        </a>
+
+    </nav>
+
+</header>
+
+
+<section class="tracking-page">
+
+    <div class="tracking-box">
+
+        <h1>
+            Track Your Order
+        </h1>
+
+        <p>
+            Enter your Order ID to check your order status.
+        </p>
+
+
+        <input
+            type="text"
+            id="orderId"
+            class="track-input"
+            placeholder="Enter Order ID"
+            autocomplete="off"
+        >
+
+
+        <button
+            class="track-button"
+            onclick="trackOrder()"
+        >
+            Track Order
+        </button>
+
+
+        <div id="trackingResult"></div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    © 2026 DESIGNER Men's Fashion Store
+
+</footer>
+
+
+<script>
+
+
+/* ================================
+   BACKEND URL
+================================ */
+
+const BACKEND_URL =
+"https://script.google.com/macros/s/AKfycbwGNqRcxEhtZxdmn_1tWKUy6-GiCB4jRJSZ_2ErbEwlt5dRpnAD15lcSOSXZsGPE6D9RQ/exec";
+
+
+/* ================================
+   ORDER STATUS LIST
+================================ */
+
+const ORDER_STEPS = [
+
+    "Order Received",
+
+    "Confirmed",
+
+    "Packed",
+
+    "Shipped",
+
+    "Out for Delivery",
+
+    "Delivered"
+
+];
+
+
+/* ================================
+   NORMALIZE STATUS
+================================ */
+
+function normalizeStatus(status) {
+
+    if (!status) {
+        return "Order Received";
+    }
+
+    const cleanStatus =
+        String(status).trim().toLowerCase();
+
+    const found =
+        ORDER_STEPS.find(function(step) {
+
+            return step.toLowerCase() === cleanStatus;
+
+        });
+
+    return found || "Order Received";
+
+}
+
+
+/* ================================
+   SHOW ORDER PROGRESS
+================================ */
+
+function showOrderProgress(currentStatus) {
+
+    const progressBox =
+        document.getElementById("orderProgress");
+
+    if (!progressBox) {
+        return;
+    }
+
+
+    const status =
+        normalizeStatus(currentStatus);
+
+
+    const currentIndex =
+        ORDER_STEPS.indexOf(status);
+
+
+    progressBox.innerHTML = `
+
+        <div class="progress-list">
+
+            ${ORDER_STEPS.map(function(step, index) {
+
+                let className = "pending";
+
+                let icon = "○";
+
+                let extraText = "";
+
+                /* Previous steps */
+
+                if (index < currentIndex) {
+
+                    className = "completed";
+
+                    icon = "✓";
+
+                }
+
+                /* Current step */
+
+                else if (index === currentIndex) {
+
+                    className = "current";
+
+                    icon = "●";
+
+                    extraText = " — Current";
+
+                }
+
+                /* Future steps */
+
+                else {
+
+                    className = "pending";
+
+                    icon = "○";
+
+                }
+
+
+                return `
+
+                    <div class="progress-item ${className}">
+
+                        <span class="progress-icon">
+                            ${icon}
+                        </span>
+
+                        <span>
+                            ${escapeHTML(step)}
+                            ${extraText}
+                        </span>
+
+                    </div>
+
+                `;
+
+            }).join("")}
+
+        </div>
+
+    `;
+
+}
+
+
+/* ================================
+   FORMAT DELIVERY DATE
+================================ */
+
+function formatDeliveryDate(value) {
+
+    if (!value) {
+
+        return "Not assigned yet";
+
+    }
+
+
+    const text =
+        String(value).trim();
+
+
+    /* Already DD/MM/YYYY */
+
+    if (
+        /^\d{2}\/\d{2}\/\d{4}$/.test(text)
+    ) {
+
+        return text;
+
+    }
+
+
+    const date =
+        new Date(text);
+
+
+    if (isNaN(date.getTime())) {
+
+        return text;
+
+    }
+
+
+    const day =
+        String(date.getDate()).padStart(2, "0");
+
+
+    const month =
+        String(date.getMonth() + 1).padStart(2, "0");
+
+
+    const year =
+        date.getFullYear();
+
+
+    return day + "/" + month + "/" + year;
+
+}
+
+
+/* ================================
+   TRACK ORDER
+================================ */
+
+async function trackOrder() {
+
+    const input =
+        document.getElementById("orderId");
+
+
+    const resultBox =
+        document.getElementById("trackingResult");
+
+
+    const orderId =
+        input.value.trim();
+
+
+    if (!orderId) {
+
+        resultBox.innerHTML = `
+
+            <div class="error-message">
+
+                Please enter your Order ID.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    resultBox.innerHTML = `
+
+        <div class="loading">
+
+            🔄 Checking your order...
+
+        </div>
+
+    `;
+
+
+    try {
+
+
+        const response =
+            await fetch(
+
+                BACKEND_URL +
+                "?action=track&orderId=" +
+                encodeURIComponent(orderId)
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Tracking result:",
+            result
+        );
+
+
+        if (!result.success) {
+
+            resultBox.innerHTML = `
+
+                <div class="error-message">
+
+                    ❌ ${
+                        escapeHTML(
+                            result.message ||
+                            "Order not found."
+                        )
+                    }
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* ================================
+           DELIVERY DATE
+        ================================= */
+
+        const deliveryText =
+            formatDeliveryDate(
+                result.expectedDelivery
+            );
+
+
+        /* ================================
+           CURRENT STATUS
+        ================================= */
+
+        const currentStatus =
+            normalizeStatus(
+                result.status
+            );
+
+
+        /* ================================
+           SHOW ORDER
+        ================================= */
+
+        resultBox.innerHTML = `
+
+            <div class="order-card">
+
+                <h2>
+                    Order Found ✅
+                </h2>
+
+
+                <div class="order-row">
+
+                    <strong>
+                        Order ID
+                    </strong>
+
+                    <span>
+                        ${
+                            escapeHTML(
+                                result.orderId
+                            )
+                        }
+                    </span>
+
+                </div>
+
+
+                <div class="order-row">
+
+                    <strong>
+                        Order Date
+                    </strong>
+
+                    <span>
+                        ${
+                            escapeHTML(
+                                result.date || "-"
+                            )
+                        }
+                    </span>
+
+                </div>
+
+
+                <div class="order-row">
+
+                    <strong>
+                        Total Amount
+                    </strong>
+
+                    <span>
+                        ₹${
+                            escapeHTML(
+                                String(
+                                    result.total || 0
+                                )
+                            )
+                        }
+                    </span>
+
+                </div>
+
+
+                <div class="order-row">
+
+                    <strong>
+                        Payment Method
+                    </strong>
+
+                    <span>
+                        ${
+                            escapeHTML(
+                                result.paymentMethod ||
+                                "Cash on Delivery"
+                            )
+                        }
+                    </span>
+
+                </div>
+
+
+                <div class="order-row">
+
+                    <strong>
+                        Expected Delivery
+                    </strong>
+
+                    <span class="delivery-date">
+
+                        📦 ${
+                            escapeHTML(
+                                deliveryText
+                            )
+                        }
+
+                    </span>
+
+                </div>
+
+
+                <div class="order-row">
+
+                    <strong>
+                        Current Status
+                    </strong>
+
+                    <span class="status">
+
+                        ${
+                            escapeHTML(
+                                currentStatus
+                            )
+                        }
+
+                    </span>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <h3>
+                        Order Progress
+                    </h3>
+
+                    <div id="orderProgress"></div>
+
+                </div>
+
+
+            </div>
+
+        `;
+
+
+        /* ================================
+           UPDATE PROGRESS
+        ================================= */
+
+        showOrderProgress(
+            currentStatus
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+
+        resultBox.innerHTML = `
+
+            <div class="error-message">
+
+                ❌ Unable to connect to
+                the order tracking server.
+
+                <br><br>
+
+                Please check your internet
+                connection and try again.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ================================
+   SECURITY HELPER
+================================ */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ================================
+   ENTER KEY
+================================ */
+
+document
+    .getElementById("orderId")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                trackOrder();
+
+            }
+
+        }
+    );
+
+
+/* ================================
+   LOAD LAST ORDER ID
+================================ */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const savedOrderId =
+            localStorage.getItem(
+                "lastOrderId"
+            );
+
+
+        if (savedOrderId) {
+
+            document
+                .getElementById("orderId")
+                .value =
+                savedOrderId;
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

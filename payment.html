@@ -2,123 +2,363 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Payment - DESIGNER</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Payment - DESIGNER</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.payment-page {
+    min-height: 75vh;
+    padding: 40px 20px;
+}
+
+.payment-box {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+}
+
+.payment-box h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.order-total {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 20px 0 25px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px;
+    margin: 12px 0;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.payment-option:hover {
+    border-color: #111;
+    transform: translateY(-1px);
+}
+
+.payment-option.selected {
+    border-color: #111;
+    background: #f5f5f5;
+}
+
+.payment-icon {
+    font-size: 28px;
+    width: 40px;
+    text-align: center;
+}
+
+.payment-info {
+    flex: 1;
+}
+
+.payment-info strong {
+    display: block;
+    font-size: 17px;
+    margin-bottom: 4px;
+}
+
+.payment-info span {
+    color: #777;
+    font-size: 13px;
+}
+
+.payment-radio {
+    width: 20px;
+    height: 20px;
+}
+
+.continue-payment {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 10px;
+    background: #111;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.continue-payment:hover {
+    background: #333;
+}
+
+.continue-payment:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.secure-note {
+    text-align: center;
+    color: #777;
+    font-size: 13px;
+    margin-top: 18px;
+}
+
+.demo-note {
+    text-align: center;
+    color: #b36b00;
+    background: #fff5df;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+</style>
+
 </head>
 
+
 <body>
+
 
 <header>
 
     <div class="logo">DESIGNER</div>
 
     <nav>
+
         <a href="index.html">Home</a>
-        <a href="jeans.html">Jeans</a>
-        <a href="shoes.html">Shoes</a>
+
         <a href="cart.html">🛒 Cart</a>
+
     </nav>
 
 </header>
+
 
 
 <section class="payment-page">
 
     <div class="payment-box">
 
-        <h2>COD Order</h2>
-
-        <p>
-            Pay the delivery charge in advance
-            to confirm your Cash on Delivery order.
-        </p>
+        <h1>Payment Options</h1>
 
 
-        <!-- DELIVERY CHARGE -->
+        <div class="demo-note">
 
-        <div class="delivery-charge">
-
-            <h3>Advance Delivery Charge</h3>
-
-            <h1>₹99</h1>
+            Online payment options are currently coming soon.
 
         </div>
 
 
-        <!-- UPI INFORMATION -->
+        <div class="order-total">
 
-        <div class="upi-section">
-
-            <h3>Pay ₹99 via UPI</h3>
-
-            <p class="upi-text">
-                UPI ID:
-                <strong>faishal809233@slc</strong>
-            </p>
-
-
-            <!-- UPI PAYMENT BUTTON -->
-
-            <a
-                href="upi://pay?pa=faishal809233@slc&pn=DESIGNER&am=99&cu=INR"
-                class="upi-pay-btn"
-            >
-                💳 Pay ₹99 via UPI
-            </a>
-
-            <p class="upi-note">
-                Tap the button and complete the ₹99 payment
-                using your UPI app.
-            </p>
+            Total Amount: ₹<span id="orderTotal">0</span>
 
         </div>
 
 
-        <!-- UTR -->
 
-        <div class="utr-section">
+        <!-- UPI -->
 
-            <h3>After Payment</h3>
+        <div class="payment-option"
+             onclick="selectPayment('UPI', this)">
 
-            <p>
-                Enter your UTR / Transaction ID below.
-            </p>
+            <div class="payment-icon">📱</div>
+
+            <div class="payment-info">
+
+                <strong>UPI</strong>
+
+                <span>
+                    Google Pay, PhonePe, Paytm & other UPI apps
+                </span>
+
+            </div>
 
             <input
-                type="text"
-                id="utr"
-                placeholder="Enter UTR / Transaction ID"
-                autocomplete="off"
+                type="radio"
+                name="payment"
+                class="payment-radio"
+                value="UPI"
             >
 
         </div>
 
 
-        <!-- SUBMIT ORDER -->
+
+        <!-- Credit Card -->
+
+        <div class="payment-option"
+             onclick="selectPayment('Credit Card', this)">
+
+            <div class="payment-icon">💳</div>
+
+            <div class="payment-info">
+
+                <strong>Credit Card</strong>
+
+                <span>
+                    Visa, Mastercard and other cards
+                </span>
+
+            </div>
+
+            <input
+                type="radio"
+                name="payment"
+                class="payment-radio"
+                value="Credit Card"
+            >
+
+        </div>
+
+
+
+        <!-- Debit Card -->
+
+        <div class="payment-option"
+             onclick="selectPayment('Debit Card', this)">
+
+            <div class="payment-icon">💳</div>
+
+            <div class="payment-info">
+
+                <strong>Debit Card</strong>
+
+                <span>
+                    Pay securely using your debit card
+                </span>
+
+            </div>
+
+            <input
+                type="radio"
+                name="payment"
+                class="payment-radio"
+                value="Debit Card"
+            >
+
+        </div>
+
+
+
+        <!-- Net Banking -->
+
+        <div class="payment-option"
+             onclick="selectPayment('Net Banking', this)">
+
+            <div class="payment-icon">🏦</div>
+
+            <div class="payment-info">
+
+                <strong>Net Banking</strong>
+
+                <span>
+                    Pay using your bank account
+                </span>
+
+            </div>
+
+            <input
+                type="radio"
+                name="payment"
+                class="payment-radio"
+                value="Net Banking"
+            >
+
+        </div>
+
+
+
+        <!-- Pay Later -->
+
+        <div class="payment-option"
+             onclick="selectPayment('Pay Later', this)">
+
+            <div class="payment-icon">🛍️</div>
+
+            <div class="payment-info">
+
+                <strong>Pay Later</strong>
+
+                <span>
+                    Pay later using supported services
+                </span>
+
+            </div>
+
+            <input
+                type="radio"
+                name="payment"
+                class="payment-radio"
+                value="Pay Later"
+            >
+
+        </div>
+
+
+
+        <!-- Cash on Delivery -->
+
+        <div class="payment-option"
+             onclick="selectPayment('Cash on Delivery', this)">
+
+            <div class="payment-icon">💵</div>
+
+            <div class="payment-info">
+
+                <strong>Cash on Delivery</strong>
+
+                <span>
+                    Pay when your order is delivered
+                </span>
+
+            </div>
+
+            <input
+                type="radio"
+                name="payment"
+                class="payment-radio"
+                value="Cash on Delivery"
+            >
+
+        </div>
+
+
 
         <button
-            class="payment-submit"
-            onclick="submitOrder()"
+            class="continue-payment"
+            onclick="continuePayment()"
         >
-            Submit COD Order
+
+            Continue
+
         </button>
 
 
-        <p class="payment-note">
+        <div class="secure-note">
 
-            Your ₹99 payment will be checked manually.
-            The remaining product amount will be paid
-            at the time of delivery.
+            🔒 Your payment information is kept secure.
 
-        </p>
+        </div>
 
     </div>
 
 </section>
+
 
 
 <footer>
@@ -131,394 +371,390 @@
 
 <script>
 
-/* ================================
-   SUBMIT COD ORDER
-================================ */
 
-async function submitOrder() {
-
-    /* Get Cart */
-
-    const cart =
-        JSON.parse(localStorage.getItem("cart")) || [];
+let selectedPayment = "";
 
 
-    if (!cart.length) {
+// Get order total
 
-        alert("Your cart is empty!");
+const total =
+    localStorage.getItem("orderTotal") || 0;
 
-        window.location.href = "cart.html";
+document.getElementById("orderTotal").innerText = total;
+
+
+
+// ================================
+// SELECT PAYMENT
+// ================================
+
+function selectPayment(method, element) {
+
+    selectedPayment = method;
+
+
+    // Remove old selection
+
+    document
+        .querySelectorAll(".payment-option")
+        .forEach(option => {
+
+            option.classList.remove("selected");
+
+        });
+
+
+    // Select current option
+
+    element.classList.add("selected");
+
+
+    // Select radio
+
+    const radio =
+        element.querySelector(".payment-radio");
+
+    radio.checked = true;
+
+}
+
+
+
+// ================================
+// GOOGLE APPS SCRIPT BACKEND
+// ================================
+
+const BACKEND_URL =
+"https://script.google.com/macros/s/AKfycbwGNqRcxEhtZxdmn_1tWKUy6-GiCB4jRJSZ_2ErbEwlt5dRpnAD15lcSOSXZsGPE6D9RQ/exec";
+
+
+
+// ================================
+// CONTINUE PAYMENT
+// ================================
+
+async function continuePayment() {
+
+
+    if (!selectedPayment) {
+
+        alert("Please select a payment method.");
 
         return;
+
     }
 
 
-    /* Get Customer Details */
 
-    const customer =
-        JSON.parse(
-            localStorage.getItem("customerDetails")
-        );
+    // =================================
+    // CASH ON DELIVERY
+    // =================================
 
-
-    if (!customer) {
-
-        alert(
-            "Delivery details are missing. Please go back to cart."
-        );
-
-        window.location.href = "cart.html";
-
-        return;
-    }
+    if (selectedPayment === "Cash on Delivery") {
 
 
-    /* Get UTR */
-
-    const utr =
-        document
-        .getElementById("utr")
-        .value
-        .trim();
+        const cart =
+            JSON.parse(
+                localStorage.getItem("cart")
+            ) || [];
 
 
-    if (!utr) {
-
-        alert(
-            "Please enter your UTR / Transaction ID."
-        );
-
-        return;
-    }
+        const customerDetails =
+            JSON.parse(
+                localStorage.getItem("customerDetails")
+            ) || {};
 
 
-    /* Calculate Product Total */
-
-    let productTotal = 0;
-
-    let orderDetails = "";
+        const orderTotal =
+            localStorage.getItem("orderTotal") || 0;
 
 
-    cart.forEach(product => {
 
-        const itemTotal =
-            product.price *
-            product.quantity;
+        // Check cart
 
+        if (!cart.length) {
 
-        productTotal += itemTotal;
+            alert("Your cart is empty!");
 
+            return;
 
-        orderDetails +=
-            product.name +
-            " | Size: " +
-            (product.size || "Not selected") +
-            " | Qty: " +
-            product.quantity +
-            " | ₹" +
-            itemTotal +
-            "\n";
-
-    });
+        }
 
 
-    /* Email Data */
 
-    const emailData = {
+        // Check customer details
 
-        _subject:
-            "NEW COD ORDER - ₹99 PAYMENT CLAIMED - DESIGNER",
+        if (
+            !customerDetails.name ||
+            !customerDetails.phone ||
+            !customerDetails.address ||
+            !customerDetails.city ||
+            !customerDetails.pincode
+        ) {
 
-        customer_name:
-            customer.name,
+            alert(
+                "Delivery details are missing. Please go back to cart."
+            );
 
-        customer_phone:
-            customer.phone,
+            return;
 
-        customer_address:
-            customer.address,
-
-        customer_city:
-            customer.city,
-
-        customer_pincode:
-            customer.pincode,
-
-        order_details:
-            orderDetails,
-
-        product_total:
-            "₹" + productTotal,
-
-        advance_delivery_charge:
-            "₹99",
-
-        payment_method:
-            "UPI - Advance Delivery Charge",
-
-        upi_id:
-            "faishal809233@slc",
-
-        transaction_utr:
-            utr,
-
-        payment_status:
-            "PAYMENT CLAIMED - VERIFY MANUALLY",
-
-        remaining_cod_amount:
-            "₹" + productTotal
-
-    };
+        }
 
 
-    try {
 
-        const response = await fetch(
+        // =================================
+        // PRODUCT DETAILS
+        // =================================
 
-            "https://formsubmit.co/ajax/faishal76342@gmail.com",
+        const products = cart.map(item => {
 
-            {
+            return (
 
-                method: "POST",
+                item.name +
 
-                headers: {
+                " | Size: " +
 
-                    "Content-Type":
-                        "application/json",
+                (item.size || "Not selected") +
 
-                    "Accept":
-                        "application/json"
+                " | Qty: " +
 
-                },
+                item.quantity +
 
-                body:
-                    JSON.stringify(emailData)
+                " | Price: ₹" +
+
+                item.price
+
+            );
+
+        }).join("\n");
+
+
+
+        // =================================
+        // ORDER DATA
+        // =================================
+
+        const orderData = {
+
+            customerName:
+                customerDetails.name,
+
+            phone:
+                customerDetails.phone,
+
+            address:
+                customerDetails.address,
+
+            city:
+                customerDetails.city,
+
+            pincode:
+                customerDetails.pincode,
+
+            products:
+                products,
+
+            total:
+                orderTotal,
+
+            paymentMethod:
+                "Cash on Delivery"
+
+        };
+
+
+
+        const button =
+            document.querySelector(
+                ".continue-payment"
+            );
+
+
+        button.disabled = true;
+
+        button.innerText =
+            "Placing Order...";
+
+
+
+        // =================================
+        // SEND ORDER TO GOOGLE SHEETS
+        // =================================
+
+        try {
+
+
+            const response =
+                await fetch(
+
+                    BACKEND_URL,
+
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "text/plain;charset=utf-8"
+
+                        },
+
+                        body:
+                            JSON.stringify(orderData)
+
+                    }
+
+                );
+
+
+
+            const result =
+                await response.json();
+
+
+
+            // =================================
+            // ORDER SUCCESS
+            // =================================
+
+            if (result.success) {
+
+
+                // Save Order ID
+
+                localStorage.setItem(
+                    "lastOrderId",
+                    result.orderId
+                );
+
+
+                // Save Order Total
+
+                localStorage.setItem(
+                    "lastOrderTotal",
+                    orderTotal
+                );
+
+
+                // Save Payment Method
+
+                localStorage.setItem(
+                    "lastPaymentMethod",
+                    "Cash on Delivery"
+                );
+
+
+                // Remove cart
+
+                localStorage.removeItem(
+                    "cart"
+                );
+
+
+                // Remove customer details
+
+                localStorage.removeItem(
+                    "customerDetails"
+                );
+
+
+                // Remove order total
+
+                localStorage.removeItem(
+                    "orderTotal"
+                );
+
+
+                // Go to success page
+
+                window.location.href =
+                    "order-success.html";
 
             }
 
-        );
+
+            // =================================
+            // ORDER FAILED
+            // =================================
+
+            else {
+
+                alert(
+
+                    "Order could not be placed.\n\n" +
+
+                    (
+                        result.error ||
+                        result.message ||
+                        "Please try again."
+                    )
+
+                );
 
 
-        if (response.ok) {
+                button.disabled = false;
 
-            alert(
-                "Order submitted successfully! Your ₹99 payment will be verified before the order is confirmed."
-            );
+                button.innerText =
+                    "Continue";
 
-
-            /* Clear Cart */
-
-            localStorage.removeItem("cart");
-
-            localStorage.removeItem(
-                "customerDetails"
-            );
-
-            localStorage.removeItem(
-                "orderTotal"
-            );
-
-
-            /* Go Home */
-
-            window.location.href =
-                "index.html";
-
-        }
-
-        else {
-
-            alert(
-                "Order could not be submitted. Please try again."
-            );
+            }
 
         }
 
+
+        // =================================
+        // SERVER ERROR
+        // =================================
+
+        catch (error) {
+
+            console.error(error);
+
+
+            alert(
+
+                "Unable to connect to the order server.\n\n" +
+
+                "Please check your internet connection and try again."
+
+            );
+
+
+            button.disabled = false;
+
+            button.innerText =
+                "Continue";
+
+        }
+
+
+        return;
+
     }
 
-    catch (error) {
 
-        console.error(error);
 
-        alert(
-            "Network error. Please check your internet connection."
-        );
+    // =================================
+    // OTHER PAYMENT OPTIONS
+    // =================================
 
-    }
+    alert(
+
+        selectedPayment +
+
+        " is currently coming soon.\n\n" +
+
+        "Online payment will be enabled later."
+
+    );
 
 }
+
 
 </script>
 
 
-<style>
-
-/* ================================
-   UPI PAYMENT SECTION
-================================ */
-
-.upi-section {
-
-    margin-top: 25px;
-
-    padding: 22px;
-
-    background: #f8f8f8;
-
-    border: 1px solid #e5e5e5;
-
-    border-radius: 12px;
-
-}
-
-
-.upi-section h3 {
-
-    margin-top: 0;
-
-    font-size: 20px;
-
-}
-
-
-.upi-text {
-
-    margin: 10px 0 18px;
-
-    color: #555;
-
-}
-
-
-.upi-text strong {
-
-    color: #111;
-
-    font-size: 17px;
-
-}
-
-
-.upi-pay-btn {
-
-    display: block;
-
-    width: 100%;
-
-    padding: 15px;
-
-    background: #25a244;
-
-    color: #fff;
-
-    text-decoration: none;
-
-    border-radius: 8px;
-
-    font-size: 17px;
-
-    font-weight: bold;
-
-    transition: 0.2s;
-
-}
-
-
-.upi-pay-btn:hover {
-
-    background: #1e8739;
-
-    transform: translateY(-1px);
-
-}
-
-
-.upi-note {
-
-    font-size: 12px !important;
-
-    color: #777 !important;
-
-    margin-top: 12px !important;
-
-}
-
-
-/* ================================
-   UTR SECTION
-================================ */
-
-.utr-section {
-
-    margin-top: 25px;
-
-    text-align: left;
-
-}
-
-
-.utr-section h3 {
-
-    margin-bottom: 5px;
-
-}
-
-
-.utr-section p {
-
-    color: #666;
-
-    font-size: 14px;
-
-}
-
-
-.utr-section input {
-
-    width: 100%;
-
-    padding: 14px;
-
-    border: 1px solid #ccc;
-
-    border-radius: 7px;
-
-    font-size: 16px;
-
-    outline: none;
-
-}
-
-
-.utr-section input:focus {
-
-    border-color: #111;
-
-}
-
-
-/* ================================
-   SUBMIT BUTTON
-================================ */
-
-.payment-submit {
-
-    margin-top: 20px;
-
-    background: #111 !important;
-
-    color: #fff !important;
-
-}
-
-
-.payment-submit:hover {
-
-    background: #333 !important;
-
-}
-
-</style>
-
 </body>
+
 </html>
